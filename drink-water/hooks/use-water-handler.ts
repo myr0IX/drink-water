@@ -69,13 +69,15 @@ const useWaterHandler = () => {
   }, []);
 
   const addWater = useCallback(async (amount: number) => {
-    setWater((currentWater) => {
+    try {
+      const savedWater = await AsyncStorage.getItem(STORAGE_KEYS.WATER);
+      const currentWater = parseStoredValue(savedWater, DEFAULT_WATER);
       const newWater = currentWater + amount;
-      AsyncStorage.setItem(STORAGE_KEYS.WATER, newWater.toString()).catch(
-        (error) => console.error("Erreur de sauvegarde (water):", error)
-      );
-      return newWater;
-    });
+      await AsyncStorage.setItem(STORAGE_KEYS.WATER, newWater.toString());
+      setWater(newWater);
+    } catch (error) {
+      console.error("Erreur de sauvegarde (water):", error);
+    }
   }, []);
 
   const resetWater = useCallback(async () => {
@@ -90,7 +92,6 @@ const useWaterHandler = () => {
   const updateDailyGoal = useCallback(
     async (goal: number) => {
       setIsLoading(true);
-      console.log("updateDailyGoal", goal);
       setDailyGoal(goal);
       try {
         await AsyncStorage.setItem(STORAGE_KEYS.DAILY_GOAL, goal.toString());

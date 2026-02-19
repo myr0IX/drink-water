@@ -18,7 +18,7 @@ const DeleteDataModal = ({
   showModal: boolean;
   setShowModal: (showModal: boolean) => void;
 }) => {
-  const { deleteData, refreshData } = useWaterHandler();
+  const { deleteData } = useWaterHandler();
 
   const handleDelete = () => {
     deleteData();

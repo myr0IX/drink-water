@@ -7,11 +7,7 @@ function Index() {
   const { water, addWater, resetWater, dailyGoal, isLoading, refreshData } =
     useWaterHandler();
 
-  useFocusEffect(
-    refreshData
-  );
-
-  console.log("render");
+  useFocusEffect(refreshData);
 
   if (isLoading) {
     return <Text>Chargement...</Text>;
